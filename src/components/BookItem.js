@@ -1,40 +1,22 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { withRouter } from "react-router";
 import { Text, Image, View, TouchableHighlight, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-class BookItem extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            id:'this is an id',
-            name:'Name of book',
-            price:0,
-            type:'Trinh tham',
-            author:'Who',
-            img:'https://salt.tikicdn.com/cache/550x550/ts/product/2e/eb/ad/9558a365adde6688d4c71a200d78310c.jpg'
-        };
-    }
-
-    componentDidMount(){
-        //TODO
-    }
-    
-    render(){
+const BookItem = ({data, history}) => {
         return(
-            <TouchableHighlight onPress={() => this.props.history.push('/book/' + this.state.id)} >
+            <TouchableHighlight onPress={() => history.push('/book/' + data.id)} >
                 <View style={styles.container}>
-                    <Image  style={{width: "100%", height: "100%"}} source={{uri:this.state.img}}/>
-                        <LinearGradient colors={['rgba(255, 255, 255,0)','rgba(0, 0, 0,0.8)', 'rgba(0, 0, 0,1)']} style={styles.infor}>
-                            <Text style={styles.name}>{this.state.name}</Text>
-                            <Text style={styles.price}>${this.state.price}</Text>
-                        </LinearGradient>
+                    <Image  style={{width: "100%", height: "100%"}} source={{uri: data.img}}/>
+                    <LinearGradient colors={['rgba(255, 255, 255,0)','rgba(0, 0, 0,0.8)', 'rgba(0, 0, 0,1)']} style={styles.infor}>
+                        <Text style={styles.name}>{data.name}</Text>
+                        <Text style={styles.price}>$ {data.price}</Text>
+                    </LinearGradient>
                 </View>
             </TouchableHighlight>
         );
     }
-   
-} 
+
 const styles = StyleSheet.create({
     container:{
         margin:5,

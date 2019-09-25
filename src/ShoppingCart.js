@@ -1,15 +1,10 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useContext} from 'react';
 import { SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar, Button, Image } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialIcons";
-
-const books = [
-  {title: "An Awesome Book", qty: 1, price: 99},
-  {title: "Inspiring Book", qty: 1, price: 99},
-  {title: "How Best You Are", qty: 1, price: 99}
-]
+import { AppContext } from '../App';
 
 const ShoppingCart = ({history}) => {
-  const [items, setItems] = useState(books);
+  const {cart, setCart} = useContext(AppContext);
 
   return (
     <Fragment>
@@ -21,17 +16,17 @@ const ShoppingCart = ({history}) => {
         </View>
         <ScrollView contentInsetAdjustmentBehavior="automatic">
           <View style={styles.container}>
-            {items.map((item, index) => 
+            {cart.map((item, index) => 
               <View style={styles.bookItem} key={index}>
-                <Image style={styles.bookImg} source={{uri: "https://salt.tikicdn.com/cache/550x550/ts/product/2e/eb/ad/9558a365adde6688d4c71a200d78310c.jpg"}}/>
+                <Image style={styles.bookImg} source={{uri: item.img}}/>
                 <View style={styles.bookInfo}>
-                  <Text style={styles.title}>{item.title}</Text>
+                  <Text style={styles.title}>{item.name}</Text>
                   <View style={styles.qtyRow}>
                     <Text>Qty:</Text>
                     <Text style={styles.txtBtn} onPress={() => {
                       const qty = item.qty === 1 ? item.qty : item.qty -1;
                       const price = item.price/item.qty * qty;
-                      setItems(oldItems => [
+                      setCart(oldItems => [
                         ...oldItems.slice(0, index), 
                         {...item, qty, price },
                         ...oldItems.slice(index+1, oldItems.length)
@@ -41,7 +36,7 @@ const ShoppingCart = ({history}) => {
                     <Text style={styles.txtBtn} onPress={() => {
                       const qty = item.qty +1;
                       const price = item.price/item.qty * qty;
-                      setItems(oldItems => [
+                      setCart(oldItems => [
                         ...oldItems.slice(0, index), 
                         {...item, qty, price },
                         ...oldItems.slice(index+1, oldItems.length)
@@ -50,7 +45,7 @@ const ShoppingCart = ({history}) => {
                   </View>
                   <Text style={styles.price}>$ {item.price.toFixed(2)}</Text>
                   <Text style={styles.xBtn} onPress={() => {
-                    setItems(oldItems => [...oldItems.slice(0, index), ...oldItems.slice(index+1, oldItems.length)]);
+                    setCart(oldItems => [...oldItems.slice(0, index), ...oldItems.slice(index+1, oldItems.length)]);
                   }}><Icon name="clear" size={20}/></Text>
                 </View>
               </View>
@@ -58,7 +53,7 @@ const ShoppingCart = ({history}) => {
             <View style={styles.footer}>
               <View style={styles.divider}/>
               <Text style={styles.total}>Shipping Fee: $ 0.00</Text>
-              <Text style={styles.total}>Total: $ {items.reduce((sum, item) => sum + item.price, 0).toFixed(2)}</Text>
+              <Text style={styles.total}>Total: $ {cart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}</Text>
               <View style={styles.btnGroup}>
                 <Button title="Continue Shopping" onPress={() => history.push('/')}/>
                 <View style={styles.spacer} />

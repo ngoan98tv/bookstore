@@ -2,30 +2,17 @@ import React, {Component} from 'react';
 import { Text, SectionList, FlatList,StyleSheet, View } from 'react-native';
 import BookItem from "./BookItem"
 
-class BookGrid extends React.Component{
-        constructor(props) {
-          super(props);
-          this.state = {
-            data:[1,2,3,4]
-          }
-        }
-      
-        render() {
-          return (
-            <View>
-              <Text style={style.header}>{this.props.title}</Text>
-              <View style={style.container}>
-              
-                {this.state.data.map((data,index)=>{
-                  return(
-                    <BookItem style={style.item}></BookItem>
-                  )
-                })}
-            </View>
-           </View>
-          );
-        }
+const BookGrid = ({title, data}) => {
+  return (
+    <View>
+      <Text style={style.header}>{title}</Text>
+      <View style={style.container}>
+        {data.map((item, index) => <BookItem key={index} style={style.item} data={item}/>)}
+    </View>
+    </View>
+  );
 }
+
 const style = StyleSheet.create({
     container:{
       flex:1,
