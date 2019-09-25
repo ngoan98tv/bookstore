@@ -9,20 +9,20 @@ const ShoppingCart = ({history}) => {
   return (
     <Fragment>
       <StatusBar barStyle="light-content" />
-      <SafeAreaView  style={{ flex: 1 }}>
+      <SafeAreaView  style={{ backgroundColor:"#0f0f0f", flex: 1 }}>
         <View style={styles.topBar}>
-          <Icon name="shopping-cart" size={24}/>
+          <Icon name="shopping-cart" size={24} color="#dedede" />
           <Text style={styles.appTitle}>Shopping Cart</Text>
         </View>
         <ScrollView contentInsetAdjustmentBehavior="automatic">
           <View style={styles.container}>
             {cart.map((item, index) => 
               <View style={styles.bookItem} key={index}>
-                <Image style={styles.bookImg} source={{uri: item.img}}/>
+                <Image style={styles.bookImg} source={{uri: item.img_url}}/>
                 <View style={styles.bookInfo}>
                   <Text style={styles.title}>{item.name}</Text>
                   <View style={styles.qtyRow}>
-                    <Text>Qty:</Text>
+                    <Text style={{color: "#dedede"}}>Qty:</Text>
                     <Text style={styles.txtBtn} onPress={() => {
                       const qty = item.qty === 1 ? item.qty : item.qty -1;
                       const price = item.price/item.qty * qty;
@@ -55,11 +55,9 @@ const ShoppingCart = ({history}) => {
               <Text style={styles.total}>Shipping Fee: $ 0.00</Text>
               <Text style={styles.total}>Total: $ {cart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}</Text>
               <View style={styles.btnGroup}>
-                <Button title="Continue Shopping" onPress={() => history.push('/')}/>
+                <Button title="Continue Shopping" color="orange" onPress={() => history.push('/')}/>
                 <View style={styles.spacer} />
-                <Button title="Next" color="green" onPress={() => {
-                  // TODO: Navigate to Customer Info
-                }} />
+                <Button title="Next" disabled={cart.length === 0} onPress={() => history.push('/customer')} />
               </View>
             </View>
           </View>
@@ -79,7 +77,8 @@ const styles = StyleSheet.create({
   appTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    paddingLeft: 8
+    paddingLeft: 8,
+    color: "#dedede"
   },
   container: {
     padding: 12
@@ -91,14 +90,16 @@ const styles = StyleSheet.create({
   },
   bookImg: {
     width: 96,
-    height: 96
+    height: 96,
+    marginRight: 12
   },
   bookInfo: {
     flex: 1
   },
   title: {
     fontSize: 18,
-    marginBottom: 3
+    marginBottom: 3,
+    color: "#dedede"
   },
   qtyRow: {
     marginBottom: 3,
@@ -107,17 +108,20 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   qty: {
-    fontSize: 16
+    fontSize: 16,
+    color: "#dedede"
   },
   txtBtn: {
     fontSize: 18,
     marginHorizontal: 6,
-    paddingHorizontal: 6
+    paddingHorizontal: 6,
+    color: "#dedede"
   },
   price: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 3
+    marginBottom: 3,
+    color: "#dedede"
   },
   xBtn: {
     position: 'absolute',
@@ -125,6 +129,7 @@ const styles = StyleSheet.create({
     right: 3,
     fontSize: 16,
     color: 'red',
+    backgroundColor: '#232323'
   },
   footer: {
     display: 'flex',
@@ -134,13 +139,15 @@ const styles = StyleSheet.create({
   divider: {
     width: 92,
     borderTopWidth: 1,
-    marginBottom: 12
+    marginBottom: 12,
+    borderTopColor: "#dedede"
   },
   total: {
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'right',
-    marginBottom: 8
+    marginBottom: 8,
+    color: "#dedede"
   },
   btnGroup: {
     display: 'flex',

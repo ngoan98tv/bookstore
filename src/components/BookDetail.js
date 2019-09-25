@@ -1,25 +1,20 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Text, Image, View, TouchableHighlight, StyleSheet, Button } from 'react-native';
 import { AppContext } from '../../App';
 
-const sample = {
-    id:'',
-    name:'Name of asdasda sadsadsa',
-    price: 10,
-    type:'Trinh tham',
-    author:'Who',
-    img:'https://salt.tikicdn.com/cache/550x550/ts/product/2e/eb/ad/9558a365adde6688d4c71a200d78310c.jpg'
-};
-
-export default BookDetail = ({id}) => {
+export default BookDetail = (props) => {
     const context = useContext(AppContext);
-    const [book, setBook] = useState({...sample, qty: 1});
+    const [book, setBook] = useState({});
+
+    useEffect(() => {
+        setBook(props.book);
+    }, [props])
 
     return(
         <View style={styles.container}>
             <Image  
                 style={styles.img} 
-                source={{uri: book.img}}/>
+                source={{uri: book.img_url}}/>
             <View style={styles.infor} >
                 <Text numberOfLines={2} style={styles.title}>{book.name}</Text>
                 <Text numberOfLines={1} style={styles.author}>{book.author}</Text>

@@ -5,9 +5,9 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const BookItem = ({data, history}) => {
         return(
-            <TouchableHighlight onPress={() => history.push('/book/' + data.id)} >
+            <TouchableHighlight onPress={() => history.push('/book/' + data._id)} >
                 <View style={styles.container}>
-                    <Image  style={{width: "100%", height: "100%"}} source={{uri: data.img}}/>
+                    <Image  style={{width: "100%", height: "100%"}} source={{uri: data.img_url}}/>
                     <LinearGradient colors={['rgba(255, 255, 255,0)','rgba(0, 0, 0,0.8)', 'rgba(0, 0, 0,1)']} style={styles.infor}>
                         <Text style={styles.name}>{data.name}</Text>
                         <Text style={styles.price}>$ {data.price}</Text>

@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar, Button, Image } from 'react-native';
+import React, { Fragment, useEffect, useState } from 'react';
+import { SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar, Button, Image, ActivityIndicator } from 'react-native';
 import BookDetail from './components/BookDetail';
 import BookGrid from './components/BookGrid';
 import CustSearchBar from './components/CustSearchBar';
@@ -35,6 +35,27 @@ const sampleData = [{
 }];
 
 export default ({match}) => {
+    const [book, setBook] = useState({});
+    const [sameType, setSameType] = useState([]);
+
+    useEffect(() => {
+        fetch('http://172.30.115.13:3000/api/book/id?book_id=' + match.params.id)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                setBook({...responseJson, qty: 1});
+                fetch('http://172.30.115.13:3000/api/book/all')
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+                        setSameType(responseJson);
+                    })
+                    .catch((error) =>{
+                        console.error(error);
+                    });
+            })
+            .catch((error) =>{
+                console.error(error);
+            });
+    }, [match.params.id])
 
     return (
         <Fragment>
@@ -42,8 +63,8 @@ export default ({match}) => {
             <SafeAreaView style={{ backgroundColor:"#0f0f0f", flex: 1 }}>
                 <CustSearchBar/>
                 <ScrollView>
-                    <BookDetail id={match.params.id}/>
-                    <BookGrid title={"Related Books"} data={sampleData}/>
+                    {book ? <BookDetail book={book}/> : <ActivityIndicator color="blue" />}
+                    {sameType ? <BookGrid title={"Related Books"} data={sameType}/>  : <ActivityIndicator/>}
                 </ScrollView>
             </SafeAreaView>
         </Fragment>
